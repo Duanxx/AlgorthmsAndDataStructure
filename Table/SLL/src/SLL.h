@@ -2,7 +2,8 @@
 *                                                                            *
 *  @file     SLL.h                                                           *
 *  @brief    单链表头文件                                                      *
-*               1.初始化线性表，即置单链表的表头指针为空                           *
+*               1.初始化单链表                                                 *
+*               2.在单链表头添加节点                                            *
 *  @author   Duanxx                                                          *
 *  @email    duanxxnj@163.com                                                *
 *  @date     2017-08-11                                                      *
@@ -39,7 +40,7 @@
 */
 typedef struct _SLL_NODE
 {
-    struct _SLL_NODE *pNextNode;
+    struct _SLL_NODE *pNext;
     ulong ulData;
 }SLL_NODE_S, *pSLL_NODE_S;
 
@@ -50,6 +51,8 @@ typedef struct _SLL
     ulong       num;
 }SLL_S, *pSLL_S;
 
-ulong SLL_init(pSLL_S pSLL);
+RET_E SLL_init(pSLL_S pSLL);
+RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode);
+
 
 #endif //end of #ifndef _SLL_H_

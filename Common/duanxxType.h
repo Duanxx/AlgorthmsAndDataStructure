@@ -18,7 +18,11 @@ typedef unsigned char   uchar;
 typedef unsigned int    uint;
 typedef unsigned long   ulong;
 
-#define DUANXX_OK     0
-#define DUANXX_ERR    1
+typedef enum _RET
+{
+    DUANXX_OK = 0,
+    DUANXX_ERR = 1,
+    DUANXX_RESERVED = 2   /** reserved */
+}RET_E;
 
 #endif //end of #ifndef _DUANXX_TYPE_H_
