@@ -1,3 +1,5 @@
 # DataStructure
 
-1、单链表
+ 功能| 文件夹 
+----|-----
+单链表 | Table/SLL/  

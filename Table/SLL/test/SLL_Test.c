@@ -20,6 +20,7 @@ RET_E SLL_TEST()
 {
     (void)SLL_init_TEST();
     (void)SLL_addNodeToHead_TEST();
+    (void)SLL_addNodeToTail_TEST();
 
     return DUANXX_OK;
 }
@@ -122,11 +123,11 @@ RET_E SLL_addNodeToHead_TEST()
     pNode = &Node;
     SLL_init(pSll);
     memset(pNode, 0, sizeof(SLL_NODE_S));
-    SLL_addNodeToHead(pSll, pNode);
 
-    if (!(pSll->pHead != NULL && 
+    if ( !( SLL_addNodeToHead(pSll, pNode) == DUANXX_OK &&
+        pSll->pHead != NULL && 
         pSll->pHead == pSll->pTail &&
-        pSll->num == 1))
+        pSll->num == 1) )
     {
         Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 4 ");
     }
@@ -134,14 +135,99 @@ RET_E SLL_addNodeToHead_TEST()
     /** Test 5 */
     pNode2 = &Node2;
     memset(pNode2, 0, sizeof(SLL_NODE_S));
-    SLL_addNodeToHead(pSll, pNode2);
 
-    if (!(pSll->pHead != NULL && 
+    if ( !(SLL_addNodeToHead(pSll, pNode2) == DUANXX_OK &&
+        pSll->pHead != NULL && 
         pSll->pHead == pNode2 &&
         pSll->pTail == pNode &&
-        pSll->num == 2))
+        pSll->num == 2) )
     {
         Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 ");
+    }
+
+    return DUANXX_OK;
+}
+
+/**
+* @brief 单链表头插入节点测试
+*   测试内容：
+*   1、  Input：pSLL 空指针， pNode 非空指针
+*        Expected : DUANXX_ERR
+*   
+*   2、  Input : pSLL 空指针， pNode 空指针
+*        Expected : DUANXX_ERR
+*
+*   3、  Input : pSLL = 非空指针， pNode = 空指针
+*        Expected : DUANXX_ERR
+*
+*   4、  Input : pSLL = 非空指针， pNode = 非空指针
+*                pSLL 链表中元素个数为0
+*        Expected : DUANXX_OK
+*                pSLL 头指针和尾指针同时指向 pNode
+*                pSLL 节点数目为1
+*
+*   5、  Input : pSLL = 非空指针， pNode = 非空指针
+*                pSLL 链表中元素个数 >= 1
+*        Expected : DUANXX_OK
+*                pSLL 尾指针指向 pNode
+*                pSLL 节点数目自增1
+*/
+RET_E SLL_addNodeToTail_TEST()
+{
+    pSLL_S pSll = NULL;
+    SLL_S Sll;
+    pSLL_NODE_S pNode = NULL;
+    SLL_NODE_S Node;
+    pSLL_NODE_S pNode2 = NULL;
+    SLL_NODE_S Node2;
+
+
+    /** Test 1 */
+    pSll = NULL;
+    pNode = &Node;
+    if (SLL_addNodeToTail(pSll, pNode) != DUANXX_ERR)
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 1")
+    }
+
+    /** Test 2 */
+    pSll = NULL;
+    pNode = NULL;
+    if (SLL_addNodeToTail(pSll, pNode) != DUANXX_ERR)
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 2");
+    }
+
+    /** Test 3 */ 
+    pSll = &Sll;
+    pNode = NULL;
+    if (SLL_addNodeToTail(pSll, pNode) != DUANXX_ERR)
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 3");
+    }
+
+    /** Test 4 */
+    pSll = &Sll;
+    pNode = &Node;
+    SLL_init(pSll);
+    memset(pNode, 0, sizeof(SLL_NODE_S));
+
+    if ( !( SLL_addNodeToTail(pSll, pNode) == DUANXX_OK &&
+        pSll->pHead != NULL && 
+        pSll->pHead == pSll->pTail &&
+        pSll->num == 1) )
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 4 ");
+    }
+
+    /** Test 5 */
+    pNode2 = &Node2;
+    if ( !( SLL_addNodeToTail(pSll, pNode2) == DUANXX_OK &&
+         pSll->pHead == pNode &&
+         pSll->pTail == pNode2 &&
+         pSll->num == 2 ))
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 5 ");
     }
 
     return DUANXX_OK;

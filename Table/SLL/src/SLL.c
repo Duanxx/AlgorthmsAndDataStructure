@@ -62,3 +62,19 @@ RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode)
 
      return DUANXX_OK;
 }
+
+
+/**
+* @brief   向单链表尾添加节点
+*           
+* @param pSll    单链表指针
+* @param pNode   节点指针
+*
+*       1、如果 pSll 或者 pNode 有一个为NULL，则退出
+*       2、如果单链表的节点数目为0，则单链表头指针和尾指针指向该节点，且链表节点数目为1
+*       3、如果单链表的节点数目>=1，则单链表尾插入节点，且链表节点数目自增1
+*/
+RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode)
+{
+
+}

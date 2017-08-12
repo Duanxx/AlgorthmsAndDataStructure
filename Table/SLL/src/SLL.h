@@ -53,6 +53,6 @@ typedef struct _SLL
 
 RET_E SLL_init(pSLL_S pSLL);
 RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode);
-
+RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode);
 
 #endif //end of #ifndef _SLL_H_
