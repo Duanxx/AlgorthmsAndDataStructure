@@ -49,10 +49,15 @@ RET_E SLL_init_TEST()
 
     /** Test 2 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
+    if (pSll == NULL)
+    {
+        assert(0);
+    }
+
     SLL_init(pSll);
     if (pSll->pHead != NULL ||
         pSll->pTail != NULL ||
-        pSll->num != 0)
+        pSll->ulNum != 0)
     {
         Duanxx_TestFail("SLL_init_TEST : Test 2 ");
     }
@@ -90,13 +95,19 @@ RET_E SLL_init_TEST()
 RET_E SLL_addNodeToHead_TEST()
 {
     pSLL_S pSll = NULL;
-
     pSLL_NODE_S pNode = NULL;
-    pSLL_NODE_S pNode2 = NULL;
+    pSLL_NODE_S NodeList[SLL_TEST_LEN];
+
+    int index = 0;
 
     /** Test 1 */
     pSll = NULL;
     pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+    if (pNode == NULL)
+    {
+        assert(0);
+    }
+
     if (SLL_addNodeToHead(pSll, pNode) != DUANXX_ERR)
     {
         Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 1 ");
@@ -113,6 +124,11 @@ RET_E SLL_addNodeToHead_TEST()
 
     /** Test 3 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
+    if (pSll == NULL)
+    {
+        assert(0);
+    }
+
     pNode = NULL;
     if (SLL_addNodeToHead(pSll, pNode) != DUANXX_ERR)
     {
@@ -123,13 +139,18 @@ RET_E SLL_addNodeToHead_TEST()
     /** Test 4 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
     pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+    if (pSll == NULL || pNode == NULL)
+    {
+        assert(0);
+    }
+
     SLL_init(pSll);
     memset(pNode, 0, sizeof(SLL_NODE_S));
 
     if ( !( SLL_addNodeToHead(pSll, pNode) == DUANXX_OK &&
         pSll->pHead != NULL && 
         pSll->pHead == pSll->pTail &&
-        pSll->num == 1) )
+        pSll->ulNum == 1) )
     {
         Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 4 ");
     }
@@ -139,24 +160,56 @@ RET_E SLL_addNodeToHead_TEST()
 
     /** Test 5 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
-    pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
-    pNode2 = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
-
-    SLL_init(pSll);
-    memset(pNode, 0, sizeof(SLL_NODE_S));
-    memset(pNode2, 0, sizeof(SLL_NODE_S));
-
-    if ( !(SLL_addNodeToHead(pSll, pNode) == DUANXX_OK &&
-        SLL_addNodeToHead(pSll, pNode2) == DUANXX_OK &&
-        pSll->pHead != NULL && 
-        pSll->pHead == pNode2 &&
-        pSll->pTail == pNode &&
-        pSll->num == 2) )
+    if (pSll == NULL)
     {
-        Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 ");
+        assert(0);
     }
-    Duanxx_Free(pNode);
-    Duanxx_Free(pNode2);
+    SLL_init(pSll);
+
+    /** 将链表中每个节点的指针都存储起来 */
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+        if (pNode == NULL)
+        {
+            assert(0);
+        }
+        memset(pNode, 0, sizeof(SLL_NODE_S));
+
+        NodeList[index] = pNode;
+        if (SLL_addNodeToHead(pSll, pNode) != DUANXX_OK)
+        {
+            Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 : 1");
+        }        
+    }
+
+    /** 保证链表头指针和尾指针正确 */
+    if (pSll->ulNum != SLL_TEST_LEN ||
+        pSll->pHead != NodeList[SLL_TEST_LEN - 1] ||
+        pSll->pTail != NodeList[0] )
+    {
+        Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 : 2");
+    }
+
+    /** 由于是向链表头添加节点，所以链表中的顺序和 NodeList 中节点的顺序相反
+        依次比较链表中所有节点的指针是否正确
+    */
+    pNode = pSll->pHead;
+    for (index = SLL_TEST_LEN - 1; index >=0; --index)
+    {
+        if (pNode == NULL || pNode != NodeList[index])
+        {
+            Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 : 3");
+            break;
+        }
+        pNode = pNode->pNext;
+    }
+
+    /** 由于是测试代码，必须自己手动释放开辟的内存，而不应该调用链表释放函数 */
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        Duanxx_Free(NodeList[index]);
+    }
     Duanxx_Free(pSll);
 
     return DUANXX_OK;
@@ -192,11 +245,17 @@ RET_E SLL_addNodeToTail_TEST()
 {
     pSLL_S pSll = NULL;
     pSLL_NODE_S pNode = NULL;
-    pSLL_NODE_S pNode2 = NULL;
+    pSLL_NODE_S NodeList[SLL_TEST_LEN];
+    int index = 0;
 
     /** Test 1 */
     pSll = NULL;
     pNode = (pSLL_NODE_S)malloc(sizeof(pSLL_NODE_S));
+    if (pNode == NULL)
+    {
+        assert(0);
+    }
+
     if (SLL_addNodeToTail(pSll, pNode) != DUANXX_ERR)
     {
         Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 1")
@@ -214,6 +273,11 @@ RET_E SLL_addNodeToTail_TEST()
     /** Test 3 */ 
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
     pNode = NULL;
+    if (pSll == NULL)
+    {
+        assert(0);
+    }
+
     if (SLL_addNodeToTail(pSll, pNode) != DUANXX_ERR)
     {
         Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 3");
@@ -223,13 +287,18 @@ RET_E SLL_addNodeToTail_TEST()
     /** Test 4 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
     pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+    if (pSll == NULL || pNode == NULL)
+    {
+        assert(0);
+    }
+
     SLL_init(pSll);
     memset(pNode, 0, sizeof(SLL_NODE_S));
 
     if ( !( SLL_addNodeToTail(pSll, pNode) == DUANXX_OK &&
         pSll->pHead != NULL && 
         pSll->pHead == pSll->pTail &&
-        pSll->num == 1) )
+        pSll->ulNum == 1) )
     {
         Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 4 ");
     }
@@ -238,22 +307,56 @@ RET_E SLL_addNodeToTail_TEST()
 
     /** Test 5 */
     pSll = (pSLL_S)malloc(sizeof(SLL_S));
-    pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
-    pNode2 = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
-    SLL_init(pSll);
-    memset(pNode, 0, sizeof(SLL_NODE_S));
-    memset(pNode2, 0, sizeof(SLL_NODE_S));
-
-    if ( !( SLL_addNodeToTail(pSll, pNode) == DUANXX_OK &&
-         SLL_addNodeToTail(pSll, pNode2) == DUANXX_OK &&
-         pSll->pHead == pNode &&
-         pSll->pTail == pNode2 &&
-         pSll->num == 2 ))
+    if (pSll == NULL)
     {
-        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 5 ");
+        assert(0);
     }
-    Duanxx_Free(pNode2);
-    Duanxx_Free(pNode);
+    SLL_init(pSll);
+
+    /** 将链表中每个节点的指针都存储起来 */
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+        if (pNode == NULL)
+        {
+            assert(0);
+        }
+        memset(pNode, 0, sizeof(SLL_NODE_S));
+
+        NodeList[index] = pNode;
+        if (SLL_addNodeToTail(pSll, pNode) != DUANXX_OK)
+        {
+            Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 5 : 1");
+        }        
+    }    
+
+    /** 保证链表头指针和尾指针正确 */
+    if (pSll->ulNum != SLL_TEST_LEN ||
+        pSll->pHead != NodeList[0] ||
+        pSll->pTail != NodeList[SLL_TEST_LEN - 1] )
+    {
+        Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 5 : 2");
+    }
+
+    /** 由于是向链表头添加节点，所以链表中的顺序和 NodeList 中节点的顺序相反
+        依次比较链表中所有节点的指针是否正确
+    */
+    pNode = pSll->pHead;
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        if (pNode == NULL || pNode != NodeList[index])
+        {
+            Duanxx_TestFail("SLL_addNodeToTail_TEST : Test 5 : 3");
+            break;
+        }
+        pNode = pNode->pNext;
+    }
+
+    /** 由于是测试代码，必须自己手动释放开辟的内存，而不应该调用链表释放函数 */
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        Duanxx_Free(NodeList[index]);
+    }
     Duanxx_Free(pSll);
 
     return DUANXX_OK;
@@ -318,7 +421,7 @@ RET_E SLL_deleteFromHead_TEST()
     if ( !(SLL_deleteFromHead(pSll) == DUANXX_OK &&
         pSll->pHead == NULL &&
         pSll->pTail == NULL &&
-        pSll->num == 0))
+        pSll->ulNum == 0))
     {
         /** 如果头指针内存释放失败，那么重新释放该内存空间 */
         if (pSll->pHead == pNode1)
@@ -345,7 +448,7 @@ RET_E SLL_deleteFromHead_TEST()
     if ( !(SLL_deleteFromHead(pSll) == DUANXX_OK &&
         pSll->pHead == pNode2 && 
         pSll->pTail == pNode2 &&
-        pSll->num == 1))
+        pSll->ulNum == 1))
     {
         /** 如果头指针内存释放失败，那么重新释放该内存空间 */
         if (pSll->pHead == pNode1)
@@ -420,7 +523,7 @@ RET_E SLL_deleteFromTail_TEST()
     if ( !(SLL_deleteFromTail(pSll) == DUANXX_OK &&
         pSll->pHead == NULL &&
         pSll->pTail == NULL &&
-        pSll->num == 0))
+        pSll->ulNum == 0))
     {
         /** 如果尾指针内存释放失败，那么重新释放该内存空间 */
         if (pSll->pTail == pNode1)
@@ -447,7 +550,7 @@ RET_E SLL_deleteFromTail_TEST()
     if (!( SLL_deleteFromTail(pSll) == DUANXX_OK &&
         pSll->pHead == pNode1 && 
         pSll->pTail == pNode1 &&
-        pSll->num == 1))
+        pSll->ulNum == 1))
     {
         /** 如果头指针内存释放失败，那么重新释放该内存空间 */
         if (pSll->pTail == pNode2)

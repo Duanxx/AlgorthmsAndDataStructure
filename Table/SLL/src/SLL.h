@@ -49,7 +49,7 @@ typedef struct _SLL
 {
     pSLL_NODE_S  pHead;
     pSLL_NODE_S  pTail;
-    ulong       num;
+    ulong        ulNum;
 }SLL_S, *pSLL_S;
 
 RET_E SLL_init(pSLL_S pSLL);

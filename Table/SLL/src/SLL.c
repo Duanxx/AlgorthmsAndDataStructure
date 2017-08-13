@@ -26,7 +26,7 @@ RET_E SLL_init(pSLL_S pSLL)
 
     pSLL->pHead = NULL;
     pSLL->pTail = NULL;
-    pSLL->num = 0;
+    pSLL->ulNum = 0;
 
     return DUANXX_OK;
 }
@@ -50,18 +50,18 @@ RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode)
     }
 
     /** 2 */
-    if (pSll->num == 0)
+    if (pSll->ulNum == 0)
     {
         pSll->pHead = pNode;
         pSll->pTail = pNode;
-        pSll->num = 1;
+        pSll->ulNum = 1;
         return DUANXX_OK;
     }
 
     /** 3 */
     pNode->pNext = pSll->pHead;
     pSll->pHead = pNode;
-    pSll->num = pSll->num + 1;
+    pSll->ulNum = pSll->ulNum + 1;
 
     return DUANXX_OK;
 }
@@ -86,11 +86,11 @@ RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode)
     }
 
     /** 2 */
-    if (pSll->num == 0)
+    if (pSll->ulNum == 0)
     {
         pSll->pHead = pNode;
         pSll->pTail = pNode;
-        pSll->num = 1;
+        pSll->ulNum = 1;
         return DUANXX_OK;
     }
 
@@ -98,7 +98,7 @@ RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode)
     pNode->pNext = NULL;
     pSll->pTail->pNext = pNode;
     pSll->pTail = pNode;
-    pSll->num = pSll->num + 1;
+    pSll->ulNum = pSll->ulNum + 1;
     return DUANXX_OK;
 }
 
@@ -122,13 +122,13 @@ RET_E SLL_deleteFromHead(pSLL_S pSll)
     pSLL_NODE_S pTmpNode = NULL;
 
     /** 1¡¢2 */
-    if (pSll == NULL || pSll->num == 0)
+    if (pSll == NULL || pSll->ulNum == 0)
     {
         return DUANXX_ERR;
     }
 
     /** 3 */
-    if (pSll->num == 1)
+    if (pSll->ulNum == 1)
     {
         Duanxx_Free(pSll->pHead);
         SLL_init(pSll);
@@ -139,7 +139,7 @@ RET_E SLL_deleteFromHead(pSLL_S pSll)
     pTmpNode = pSll->pHead->pNext;
     Duanxx_Free(pSll->pHead);
     pSll->pHead = pTmpNode;
-    pSll->num =  pSll->num - 1;
+    pSll->ulNum =  pSll->ulNum - 1;
 
     return DUANXX_OK;
 }
@@ -161,13 +161,13 @@ RET_E SLL_deleteFromTail(pSLL_S pSll)
     pSLL_NODE_S pTmpNode = NULL;
 
     /** 1¡¢2 */
-    if (pSll == NULL || pSll->num == 0)
+    if (pSll == NULL || pSll->ulNum == 0)
     {
         return DUANXX_ERR;
     }
 
     /** 3 */
-    if (pSll->num == 1)
+    if (pSll->ulNum == 1)
     {
         Duanxx_Free(pSll->pTail);
         SLL_init(pSll);
@@ -182,7 +182,7 @@ RET_E SLL_deleteFromTail(pSLL_S pSll)
     }
     Duanxx_Free(pSll->pTail);
     pSll->pTail = pTmpNode;
-    pSll->num = pSll->num - 1;
+    pSll->ulNum = pSll->ulNum - 1;
 
     return DUANXX_OK;
 }

@@ -15,6 +15,7 @@
 #include "Table/SLL/src/SLL.h"
 #include "Common/duanxxTest.h"
 
+#define SLL_TEST_LEN    10
 
 RET_E SLL_TEST();
 RET_E SLL_init_TEST();
