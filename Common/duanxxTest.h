@@ -24,6 +24,9 @@
     }\
 }
 
-
+#define Duanxx_Free(ptr) {\
+    free(ptr);\
+    ptr = NULL;\
+}
 
 #endif //end of #ifndef _DUANXX_TEST_H_

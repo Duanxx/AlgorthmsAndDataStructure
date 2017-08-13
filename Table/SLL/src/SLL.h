@@ -34,6 +34,7 @@
 /* 19.将线性表进行快速排序 */
 
 #include "Common/duanxxType.h"
+#include "Common/duanxxTest.h"
 
 /**
 *   单链表节点，这里仅仅是放了一个数据
@@ -54,5 +55,8 @@ typedef struct _SLL
 RET_E SLL_init(pSLL_S pSLL);
 RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode);
 RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode);
+RET_E SLL_deleteFromHead(pSLL_S pSll);
+RET_E SLL_deleteFromTail(pSLL_S pSll);
+
 
 #endif //end of #ifndef _SLL_H_

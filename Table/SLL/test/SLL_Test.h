@@ -20,6 +20,8 @@ RET_E SLL_TEST();
 RET_E SLL_init_TEST();
 RET_E SLL_addNodeToHead_TEST();
 RET_E SLL_addNodeToTail_TEST();
+RET_E SLL_deleteFromHead_TEST();
+RET_E SLL_deleteFromTail_TEST();
 
 
 #endif //end of #ifndef _SLL_TEST_H_
