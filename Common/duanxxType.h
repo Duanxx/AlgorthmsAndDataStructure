@@ -14,9 +14,9 @@
 
 #include <stdlib.h>
 
-typedef unsigned char   uchar;
-typedef unsigned int    uint;
-typedef unsigned long   ulong;
+typedef unsigned char   UCHAR;
+typedef unsigned int    UINT;
+typedef unsigned long   ULONG;
 
 typedef enum _RET
 {

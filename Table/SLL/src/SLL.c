@@ -186,3 +186,113 @@ RET_E SLL_deleteFromTail(pSLL_S pSll)
 
     return DUANXX_OK;
 }
+
+/**
+* @brief   释放一个单链表
+*
+* @param pSll    单链表指针
+*
+*       1、如果 pSll为 NULL，则退出
+*       2、如果单链表的节点数目为0，则退出
+*       3、如果单链表的节点数目>=1，则pSll的头指针和尾指针为空，pSll的节点数目为0
+*/
+RET_E SLL_freeList(pSLL_S pSll)
+{
+    pSLL_NODE_S pTmpNode = NULL;
+    pSLL_NODE_S pTmpNextNode = NULL;
+
+    /** 1、2 */
+    if (pSll == NULL || pSll->ulNum == 0)
+    {
+        return DUANXX_ERR;
+    }
+
+    /** 3 */
+    pTmpNode = pSll->pHead;
+    while(pTmpNode != NULL)
+    {
+        pTmpNextNode = pTmpNode->pNext;
+        Duanxx_Free(pTmpNode);
+        pTmpNode = pTmpNextNode;
+    }
+
+    SLL_init(pSll);
+    return DUANXX_OK;
+}
+
+/**
+* @brief   将链表的数据打印出来
+*
+* @param pSll    单链表指针
+*
+*       1、如果 pSll为 NULL，则退出
+*       2、如果单链表的节点数目为0，则提示链表为空
+*       3、如果单链表的节点数目>=1，则将链表打印出来
+*/
+RET_E SLL_displayList(pSLL_S pSll)
+{
+    ULONG ulIndex = 0;
+    pSLL_NODE_S pTmpNode = NULL; 
+
+    /** 1 */
+    if (pSll == NULL)
+    {
+        return DUANXX_ERR;
+    }
+
+    /** 2 */
+    if (pSll->ulNum == 0)
+    {
+        printf_s("\n SLL is empty !\n");
+        return DUANXX_OK;
+    }
+
+    /** 3 */
+    pTmpNode = pSll->pHead;
+    printf_s("\n SLL is :\n");
+    for (ulIndex = 0; ulIndex < pSll->ulNum ; ++ulIndex)
+    {
+        printf_s("%d", pTmpNode->ulData);
+        if (ulIndex != pSll->ulNum - 1)
+        {
+            printf_s("->");
+        }
+        pTmpNode = pTmpNode->pNext;
+    }
+
+    return DUANXX_OK;
+}
+
+/**
+* @brief   数据是否在链表中
+*
+* @param pSll    单链表指针
+* @param ulData  待测试数据
+*
+*       1、如果 pSll为 NULL，则返回错误
+*       2、如果单链表的节点数目为0，则返回错误
+*       3、如果单链表的节点数目>=1，返回查找结果
+*/
+RET_E SLL_isInList(pSLL_S pSll, ULONG ulData)
+{
+    pSLL_NODE_S pTmpNode = NULL;
+
+    /** 1,2 */
+    if (pSll == NULL || pSll->ulNum == 0)
+    {
+        return DUANXX_ERR;
+    }
+
+    /** 3 */
+    pTmpNode = pSll->pHead;
+    while (pTmpNode != NULL)
+    {
+        if (pTmpNode->ulData == ulData)
+        {
+            return DUANXX_OK;
+        }
+        pTmpNode = pTmpNode->pNext;
+    }
+
+    return DUANXX_ERR;
+}

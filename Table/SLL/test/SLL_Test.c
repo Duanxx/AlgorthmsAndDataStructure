@@ -22,6 +22,68 @@ RET_E SLL_TEST()
     (void)SLL_addNodeToHead_TEST();
     (void)SLL_addNodeToTail_TEST();
     (void)SLL_deleteFromHead_TEST();
+    (void)SLL_displayList_TEST();
+    (void)SLL_isInList_TEST();
+    return DUANXX_OK;
+}
+
+
+/**
+* @brief 用于判断单链表和给定的节点指针数组是否完全匹配
+*           节点指针数组存放的是给单链表分配的节点的指针序列
+*           简而言之，节点指针数组就是单链表的数组化
+*           从理论上讲，这两个应该是一样的才对
+*
+* @param pNodeList 节点指针数组
+* @param ulLen     节点指针数组中元素的个数
+* @param pSll      单链表指针
+* @param szTestStr 测试用例的说明性字符串
+*
+*/
+RET_E SLL_IsListMatched(pSLL_NODE_S arrNodeList[], ULONG ulLen, pSLL_S pSll, char *szTestStr)
+{
+    ULONG ulIndex = 0;
+    pSLL_NODE_S pTmpNode = NULL;
+
+    if (ulLen == 0)
+    {
+        if (pSll->pHead != NULL ||
+            pSll->pTail != NULL ||
+            pSll->ulNum != 0)
+        {
+            Duanxx_TestFail(szTestStr);
+            return DUANXX_ERR;
+        }
+    }
+
+    if (ulLen == 1)
+    {
+        if (pSll->pHead != pSll->pTail ||
+            pSll->pHead != arrNodeList[0] ||
+            pSll->ulNum != 1)
+        {
+            Duanxx_TestFail(szTestStr);
+            return DUANXX_ERR;
+        }
+    }
+
+    pTmpNode = pSll->pHead;
+
+    if (pSll->ulNum != ulLen)
+    {
+        Duanxx_TestFail(szTestStr);
+        return DUANXX_ERR;
+    }
+
+    for (ulIndex = 0; ulIndex < ulLen; ++ulIndex)
+    {
+        if (arrNodeList[ulIndex] != pTmpNode)
+        {
+            Duanxx_TestFail(szTestStr);
+            return DUANXX_ERR;
+        }
+        pTmpNode = pTmpNode->pNext;
+    }
 
     return DUANXX_OK;
 }
@@ -182,14 +244,8 @@ RET_E SLL_addNodeToHead_TEST()
             Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 : 1");
         }        
     }
+    
 
-    /** 保证链表头指针和尾指针正确 */
-    if (pSll->ulNum != SLL_TEST_LEN ||
-        pSll->pHead != NodeList[SLL_TEST_LEN - 1] ||
-        pSll->pTail != NodeList[0] )
-    {
-        Duanxx_TestFail("SLL_addNodeToHead_TEST : Test 5 : 2");
-    }
 
     /** 由于是向链表头添加节点，所以链表中的顺序和 NodeList 中节点的顺序相反
         依次比较链表中所有节点的指针是否正确
@@ -562,6 +618,125 @@ RET_E SLL_deleteFromTail_TEST()
     }
     Duanxx_Free(pNode1);
     Duanxx_Free(pSll);
+
+    return DUANXX_OK;
+}
+
+/**
+* @brief 单链表显示测试
+*
+*   测试内容：
+*   1、  Input：pSLL 空指针
+*        Expected : DUANXX_ERR
+*
+*   2、  Input：pSLL 非空指针
+*              单链表的元素个数为0
+*        Expected : DUANXX_OK
+                提示链表为空
+*
+*   3、  Input：pSLL 非空指针
+*              单链表的元素个>=1
+*        Expected : DUANXX_OK
+*                显示链表
+*/
+RET_E SLL_displayList_TEST()
+{
+    pSLL_S pSll = NULL;
+    pSLL_NODE_S pNode = NULL;
+    int index = 0;
+
+    /** Test 1、2 人工视检 */
+
+    pSll = (pSLL_S)malloc(sizeof(SLL_S));
+    if (pSll == NULL)
+    {
+        assert(0);
+    }
+    SLL_init(pSll);
+
+    /** 将链表中每个节点的指针都存储起来 */
+    for (index = 0; index < SLL_TEST_LEN; ++index)
+    {
+        pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+        if (pNode == NULL)
+        {
+            assert(0);
+        }
+        memset(pNode, 0, sizeof(SLL_NODE_S));
+        pNode->ulData = index;
+
+        SLL_addNodeToTail(pSll, pNode);
+    }    
+
+    SLL_displayList(pSll);
+
+    SLL_freeList(pSll);
+
+    SLL_displayList(pSll);
+
+    Duanxx_Free(pSll);
+
+    return DUANXX_OK;
+}
+
+/**
+* @brief 单链表显示测试
+*
+*   测试内容：
+*   1、  Input：pSLL 空指针
+*        Expected : DUANXX_ERR
+*
+*   2、  Input：pSLL 非空指针
+*              单链表的元素个数为0
+*        Expected : DUANXX_ERR
+*
+*   3、  Input：pSLL 非空指针
+*              单链表的元素个>=1
+*        Expected : 返回查找结果
+*                
+*/
+RET_E SLL_isInList_TEST()
+{
+    /** Test 1、2 人工视检 */
+    pSLL_S pSll = NULL;
+    pSLL_NODE_S pNode = NULL;
+    ULONG ulIndex = 0;
+
+    /** Test 1、2 人工视检 */
+
+    pSll = (pSLL_S)malloc(sizeof(SLL_S));
+    if (pSll == NULL)
+    {
+        assert(0);
+    }
+    SLL_init(pSll);
+
+    for (ulIndex = 0; ulIndex < SLL_TEST_LEN; ++ulIndex)
+    {
+        pNode = (pSLL_NODE_S)malloc(sizeof(SLL_NODE_S));
+        if (pNode == NULL)
+        {
+            assert(0);
+        }
+        memset(pNode, 0, sizeof(SLL_NODE_S));
+        pNode->ulData = ulIndex;
+
+        SLL_addNodeToTail(pSll, pNode);
+    }    
+
+    for (ulIndex = 0; ulIndex < pSll->ulNum; ++ulIndex)
+    {
+        if (SLL_isInList(pSll, ulIndex) != DUANXX_OK)
+        {
+            Duanxx_TestFail("SLL_isInList_TEST : Test 3 : 1");
+            printf_s("ulIndex = %d\n", ulIndex);
+        }
+    }
+
+    if (SLL_isInList(pSll, ulIndex) != DUANXX_ERR)
+    {
+        Duanxx_TestFail("SLL_isInList_TEST : Test 3 : 2");
+    }
 
     return DUANXX_OK;
 }

@@ -42,14 +42,14 @@
 typedef struct _SLL_NODE
 {
     struct _SLL_NODE *pNext;
-    ulong ulData;
+    ULONG ulData;
 }SLL_NODE_S, *pSLL_NODE_S;
 
 typedef struct _SLL
 {
     pSLL_NODE_S  pHead;
     pSLL_NODE_S  pTail;
-    ulong        ulNum;
+    ULONG        ulNum;
 }SLL_S, *pSLL_S;
 
 RET_E SLL_init(pSLL_S pSLL);
@@ -57,6 +57,9 @@ RET_E SLL_addNodeToHead(pSLL_S pSll, pSLL_NODE_S pNode);
 RET_E SLL_addNodeToTail(pSLL_S pSll, pSLL_NODE_S pNode);
 RET_E SLL_deleteFromHead(pSLL_S pSll);
 RET_E SLL_deleteFromTail(pSLL_S pSll);
+RET_E SLL_freeList(pSLL_S pSll);
+RET_E SLL_displayList(pSLL_S pSll);
+RET_E SLL_isInList(pSLL_S pSll, ULONG ulData);
 
 
 #endif //end of #ifndef _SLL_H_

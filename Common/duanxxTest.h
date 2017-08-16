@@ -24,6 +24,7 @@
     }\
 }
 
+
 #define Duanxx_Free(ptr) {\
     free(ptr);\
     ptr = NULL;\
