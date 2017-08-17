@@ -296,3 +296,24 @@ RET_E SLL_isInList(pSLL_S pSll, ULONG ulData)
 
     return DUANXX_ERR;
 }
+
+/**
+* @brief   计算链表节点的数目
+*
+* @param pSll    单链表指针
+* @param ulData  待测试数据
+*
+*       1、如果 pSll为 NULL，则返回 -1
+*       2、返回单链表的节点数目
+*/
+INT32 SLL_count(pSLL_S pSll)
+{
+    /** 1 */
+    if (pSll == NULL)
+    {
+        return -1;
+    }
+
+    /** 2 */
+    return pSll->ulNum;
+}

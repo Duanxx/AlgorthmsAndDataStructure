@@ -2,7 +2,7 @@
 *                                                                            *
 *  @file     SLL_Test.c                                                      *
 *  @brief    单链测试实现文件                                                  *
-*                                                                            *
+*                这个文件中仅仅是对链表基本操作的测试                             *
 *  @author   Duanxx                                                          *
 *  @email    duanxxnj@163.com                                                *
 *  @date     2017-08-12                                                      *

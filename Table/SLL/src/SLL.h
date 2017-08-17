@@ -60,6 +60,7 @@ RET_E SLL_deleteFromTail(pSLL_S pSll);
 RET_E SLL_freeList(pSLL_S pSll);
 RET_E SLL_displayList(pSLL_S pSll);
 RET_E SLL_isInList(pSLL_S pSll, ULONG ulData);
+INT32 SLL_count(pSLL_S pSll);
 
 
 #endif //end of #ifndef _SLL_H_

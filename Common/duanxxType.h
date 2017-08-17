@@ -17,6 +17,7 @@
 typedef unsigned char   UCHAR;
 typedef unsigned int    UINT;
 typedef unsigned long   ULONG;
+typedef int             INT32;
 
 typedef enum _RET
 {
